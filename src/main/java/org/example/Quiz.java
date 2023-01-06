@@ -179,10 +179,11 @@ public class Quiz implements ActionListener{
     }
     public void nextQuestion() {
 
+        //if that is the last question go for result
         if(index>=total_questions) {
             results();
         }
-        else {
+        else {//else go to next question
             textfield.setText("Question "+(index+1));
             textarea.setText(questions[index]);
             answer_labelA.setText(options[index][0]);
@@ -192,6 +193,8 @@ public class Quiz implements ActionListener{
             timer.start();
         }
     }
+
+    //if user clicked the button this function will takes place
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -199,6 +202,8 @@ public class Quiz implements ActionListener{
         buttonB.setEnabled(false);
         buttonC.setEnabled(false);
         buttonD.setEnabled(false);
+
+        //if the clicked option is correct then add correct guesses by one
 
         if(e.getSource()==buttonA) {
             answer= 'A';
@@ -226,15 +231,18 @@ public class Quiz implements ActionListener{
         }
         displayAnswer();
     }
+
     public void displayAnswer() {
 
         timer.stop();
-
+        //while displaying answer user should not change the option that's why options are disabled
         buttonA.setEnabled(false);
         buttonB.setEnabled(false);
         buttonC.setEnabled(false);
         buttonD.setEnabled(false);
 
+
+        // execpt correct answer changing all the options to red
         if(answers[index] != 'A')
             answer_labelA.setForeground(new Color(255,0,0));
         if(answers[index] != 'B')
@@ -249,11 +257,16 @@ public class Quiz implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
 
+
+                //again changing the color of the options to green for the next question
+                // if we don't do this the next question options also appears as same as previous one
                 answer_labelA.setForeground(new Color(25,255,0));
                 answer_labelB.setForeground(new Color(25,255,0));
                 answer_labelC.setForeground(new Color(25,255,0));
                 answer_labelD.setForeground(new Color(25,255,0));
 
+                //resetting answer,timer and enabling the option buttons for next question
+                System.out.println(answer);
                 answer = ' ';
                 seconds=10;
                 seconds_left.setText(String.valueOf(seconds));
@@ -261,23 +274,33 @@ public class Quiz implements ActionListener{
                 buttonB.setEnabled(true);
                 buttonC.setEnabled(true);
                 buttonD.setEnabled(true);
-                index++;
-                nextQuestion();
+                index++;//increasing the index so that next question will appear
+                nextQuestion();//calling next question function
             }
         });
+
+
+        //we just want this event to execute only once
+        //if we don't put this as false it will occur for every 2 seconds
+        // comment this code if you just wanna know what will happen if u miss this code😁
         pause.setRepeats(false);
-        pause.start();
+        pause.start();//starting the timer again
     }
     public void results(){
 
+        //disabling all the button so that user dont click for options
         buttonA.setEnabled(false);
         buttonB.setEnabled(false);
         buttonC.setEnabled(false);
         buttonD.setEnabled(false);
 
+
+        //calculate the percentage of correct scores in total scores
         result = (int)((correct_guesses/(double)total_questions)*100);
 
         textfield.setText("RESULTS!");
+
+        //just giving space for result text so that it appears in center
         textarea.setText("");
         answer_labelA.setText("");
         answer_labelB.setText("");
@@ -287,6 +310,8 @@ public class Quiz implements ActionListener{
         number_right.setText("("+correct_guesses+"/"+total_questions+")");
         percentage.setText(result+"%");
 
+
+        //adding number right and percentage to the frame
         frame.add(number_right);
         frame.add(percentage);
 
